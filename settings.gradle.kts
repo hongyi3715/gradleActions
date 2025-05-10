@@ -21,4 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "GradleTest"
 include(":app")
- 
+include(":lib_compiler")
+include(":lib_annotation")
+include(":lib_api")
