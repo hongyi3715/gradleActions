@@ -1,17 +1,25 @@
 package com.example.lib_api
 
-import android.util.Log
-import com.example.lib_annotation.register.IRouteRoot
+import android.app.Application
+import com.example.lib_api.autowired.AutoWiredHelper
+import com.example.lib_api.route.RouteHelper
 
 object HRouter {
-    private val routeRoot = mutableMapOf<String,String>()
 
-    fun init(){
-        val rootClazz = Class.forName("com.lq.router.Root")
-        val root = rootClazz.getDeclaredConstructor().newInstance() as IRouteRoot
-        root.loadInto(routeRoot)
-        routeRoot.forEach {
-            Log.d("MyRoot","info: $it")
-        }
+    private lateinit var app: Application
+
+    fun init(context: Application){
+        app = context
+        RouteHelper.findRoot()
     }
+
+
+    fun build(path: String): HRouterDelegate {
+        return HRouterDelegate(path).withContext(app)
+    }
+
+    fun inject(target: Any){
+        AutoWiredHelper.inject(target)
+    }
+
 }

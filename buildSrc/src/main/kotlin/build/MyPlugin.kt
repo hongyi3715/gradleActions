@@ -10,7 +10,7 @@ import org.gradle.api.Project
  */
 class MyPlugin : Plugin<Project> {
     override fun apply(target: Project) {
-        target.tasks.register<TestBuild>("testBuild", TestBuild::class.java){
+        target.tasks.register<TestBuild>("cleanUpJar", TestBuild::class.java){
             group = "buildDebug"
             description = "test build gradle task"
         }

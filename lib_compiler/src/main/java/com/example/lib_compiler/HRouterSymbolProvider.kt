@@ -4,8 +4,8 @@ import com.google.devtools.ksp.processing.SymbolProcessor
 import com.google.devtools.ksp.processing.SymbolProcessorEnvironment
 import com.google.devtools.ksp.processing.SymbolProcessorProvider
 
-class MySymbolProvider: SymbolProcessorProvider {
+class HRouterSymbolProvider: SymbolProcessorProvider {
     override fun create(environment: SymbolProcessorEnvironment): SymbolProcessor {
-        return MySymbolProcessor(environment.codeGenerator)
+        return HRouterSymbolProcessor(environment)
     }
 }

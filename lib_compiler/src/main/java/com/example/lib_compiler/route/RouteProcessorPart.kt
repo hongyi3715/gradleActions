@@ -1,11 +1,11 @@
-package com.example.lib_compiler
+package com.example.lib_compiler.route
 
 import com.example.lib_annotation.Route
+import com.example.lib_compiler.ProcessorPart
 import com.google.devtools.ksp.processing.CodeGenerator
 import com.google.devtools.ksp.processing.Dependencies
+import com.google.devtools.ksp.processing.KSPLogger
 import com.google.devtools.ksp.processing.Resolver
-import com.google.devtools.ksp.processing.SymbolProcessor
-import com.google.devtools.ksp.symbol.KSAnnotated
 import com.google.devtools.ksp.symbol.KSClassDeclaration
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
@@ -13,17 +13,14 @@ import com.squareup.kotlinpoet.FileSpec
 import com.squareup.kotlinpoet.FunSpec
 import com.squareup.kotlinpoet.KModifier
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
-import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asTypeName
+import kotlin.collections.iterator
 
-class MySymbolProcessor(private val codeGenerator: CodeGenerator): SymbolProcessor {
-    private var generated = false
+class RouteSymbolProcessorPart(private val logger : KSPLogger, private val codeGenerator: CodeGenerator):
+    ProcessorPart {
     private val generatedPackageName = "com.lq.router"
-    private val interfacePackage = "com.lq.router_base"
-    private var hasGenerated = false
-    override fun process(resolver: Resolver): List<KSAnnotated> {
-        if(hasGenerated)return emptyList()
+    override fun process(resolver: Resolver) {
+        if (resolver.getNewFiles().none()) return
         val routeMap = mutableMapOf<String, MutableMap<String, String>>()
         resolver.getSymbolsWithAnnotation(Route::class.qualifiedName!!)
             .filterIsInstance<KSClassDeclaration>()
@@ -40,13 +37,12 @@ class MySymbolProcessor(private val codeGenerator: CodeGenerator): SymbolProcess
         if(routeMap.isNotEmpty()){
             generateGroup(routeMap)
             generateRoot(routeMap)
-            hasGenerated = true
         }
-        return emptyList()
+        return
     }
 
     private fun generateRoot(routeMap:Map<String,Map<String, String>>){
-        val rootInterface = ClassName("com.example.lib_annotation.register","IRouteRoot")
+        val rootInterface = ClassName("com.example.lib_annotation.route","IRouteRoot")
         val function = FunSpec.builder("loadInto").addModifiers(KModifier.OVERRIDE).addParameter("rootMap",
             ClassName("kotlin.collections","MutableMap").parameterizedBy(ClassName("kotlin","String"),
                 ClassName("kotlin","String")))
@@ -71,7 +67,7 @@ class MySymbolProcessor(private val codeGenerator: CodeGenerator): SymbolProcess
         for ((groupName,pathMap) in groupMap){
             val className = "HRouter\$\$Group\$\$$groupName"
             val routeMetaClass = ClassName("com.example.lib_annotation.data","RouteMeta")
-            val groupInterface = ClassName("com.example.lib_annotation.register", "IRouteGroup")
+            val groupInterface = ClassName("com.example.lib_annotation.route", "IRouteGroup")
 
             val function = FunSpec.builder("loadInto").addModifiers(KModifier.OVERRIDE)
                 .addParameter("groupMap",ClassName("kotlin.collections","MutableMap").parameterizedBy(
@@ -98,5 +94,6 @@ class MySymbolProcessor(private val codeGenerator: CodeGenerator): SymbolProcess
             }
         }
     }
+
 
 }
