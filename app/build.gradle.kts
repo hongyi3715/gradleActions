@@ -20,7 +20,12 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
-    sourceSets["main"].java.srcDir("build/generated/hrouter_index")
+    sourceSets["main"].java.srcDirs(
+        "build/generated/route",
+        "build/generated/interceptor",
+        "build/generated/degrade",
+        "build/generated/deeplink")
+
     buildTypes {
         release {
             isMinifyEnabled = false

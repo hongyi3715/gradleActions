@@ -5,7 +5,6 @@ import com.google.devtools.ksp.processing.Dependencies
 
 object MetaInfUtil {
 
-
      fun writeMetaInf(codeGenerator: CodeGenerator,content:String,moduleName:String ="default",packageName: String ="META-INF/"){
         val file = codeGenerator.createNewFile(
             Dependencies(aggregating = true),

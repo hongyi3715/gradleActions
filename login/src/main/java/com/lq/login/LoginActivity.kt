@@ -9,17 +9,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.lib_annotation.AutoWired
 import com.example.lib_annotation.Route
+import com.example.lib_annotation.RouteDeepLink
 import com.example.lib_annotation.data.InterceptorMeta
 import com.example.lib_api.HRouter
 import com.example.lib_api.HRouterDelegate
+import com.example.lib_api.interceptor.InterceptorFactory
 import com.example.lib_api.interceptor.InterceptorManager
 import com.lq.router.InterceptorRegisterLogin
 
 @Route(path = "/login/login")
+@RouteDeepLink(["myapp://login","https://myapp.day/login"])
 class LoginActivity: ComponentActivity() {
     @AutoWired(required = false)
     var userName:String?=null
@@ -44,9 +48,7 @@ class LoginActivity: ComponentActivity() {
             Text("userName: $userName")
             Text("account: $account")
         }
-        val interceptors = mutableListOf<InterceptorMeta>()
-        InterceptorRegisterLogin.register(interceptors)
-        InterceptorManager.addAllInterceptor()
+
 
     }
 }

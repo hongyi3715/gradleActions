@@ -1,28 +1,42 @@
 package com.example.lib_api.interceptor
 
 import android.content.Context
+import com.example.lib_annotation.data.InterceptorMeta
+import com.example.lib_annotation.interceptor.IInterceptorRegister
 import com.example.lib_api.util.LogUtil
+import kotlin.collections.forEach
 
 //todo 动态参数
 object InterceptorManager {
     private val interceptors = mutableListOf<IRouteInterceptor>()
 
+    private val data = mutableListOf<InterceptorMeta>()
+
     private val globalWhiteList = mutableSetOf<String>()
+
+    fun initInterceptor(context: Context){
+        val clazz = Class.forName("com.lq.router.InterceptorIndex")
+        val instance = clazz.getField("INSTANCE").get(null) // 拿到 object 的单例实例
+        val method = clazz.getDeclaredMethod("getRoots")
+
+        val registers = method.invoke(instance) as List<IInterceptorRegister>
+
+        registers.forEach {
+           it.register(data)
+        }
+        data.sortedBy { it.priority }.toMutableList().forEach {
+            InterceptorFactory.create(context,it.destination).apply {
+                addInterceptor(this)
+            }
+        }
+    }
 
 
     fun addInterceptor(intercept: IRouteInterceptor){
         interceptors.add(intercept)
     }
 
-    fun addAllInterceptor(data:List<IRouteInterceptor>){
-        interceptors.addAll(data)
-    }
 
-    fun init(context: Context){
-        interceptors.forEach {
-            it.init(context)
-        }
-    }
 
     suspend fun handleInterceptor(path: String,context: Context): Boolean{
         val iterators = interceptors.toList().iterator()
@@ -61,7 +75,13 @@ object InterceptorManager {
         return !isIntercepted
     }
 
+    private fun isFromGroup(path:String,group:String):Boolean{
+        return true
+    }
+
     private fun isInWhiteList(path: String,route: IRouteInterceptor) :Boolean{
         return globalWhiteList.contains(path) || route.whiteList.contains(path)
     }
+
+
 }

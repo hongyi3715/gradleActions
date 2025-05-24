@@ -19,11 +19,12 @@ import androidx.lifecycle.lifecycleScope
 import com.example.lib_annotation.Route
 import com.example.lib_annotation.RouteDeepLink
 import com.example.lib_api.HRouter
+import com.example.lib_api.util.showToast
 import com.lq.gradletest.ui.theme.GradleTestTheme
 import kotlinx.coroutines.launch
 
 @Route(path = "/main/main")
-@RouteDeepLink(["myapp://login","http://www.baidu.com/login"])
+@RouteDeepLink(["myapp://main","http://www.baidu.com/main"])
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,21 +54,24 @@ class MainActivity : ComponentActivity() {
 fun Greeting(name: String, modifier: Modifier = Modifier) {
     val context = LocalContext.current
     Button(onClick = {
-        toLogin(context)
+        toTest(context)
     },modifier = Modifier.padding(50.dp,100.dp)) {
         Text(text = "跳转信息")
     }
 }
 
 fun toLogin(context: Context){
-
-    HRouter.build("/login/login")
+    HRouter.build("/main/test")
         .withContext(context)
         .with {
             string("userName", "Android")
             int("account", 100)
             parameter("parameter","current parameter")
         }.navigate()
+}
+
+fun toTest(context: Context){
+    HRouter.buildUri("myapp://login").withContext(context).navigate()
 }
 
 

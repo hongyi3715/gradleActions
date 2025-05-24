@@ -23,6 +23,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".TestActivity"/>
+        <activity android:name=".DeepLinkDispatcherActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="myapp" />
+                <data android:host="myapp.day" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

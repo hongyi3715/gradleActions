@@ -18,9 +18,9 @@ annotation class RouterInterceptor(val priority : Int = 0,val group: String = ""
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class RouteDegrade(val group: String ="")
+annotation class RouteDegrade(val priority:Int = 0,val group: String ="")
 
 
 @Target(AnnotationTarget.CLASS)
 @Retention(AnnotationRetention.SOURCE)
-annotation class RouteDeepLink(val deepLink : Array<String>)
+annotation class RouteDeepLink(val deepLink : Array<String> = [])

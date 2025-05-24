@@ -1,13 +1,18 @@
 package com.example.lib_api.interceptor
 
+import com.example.lib_api.util.LogUtil
 import java.util.Collections
 
 object InterceptorHistory {
     private val pathStack = Collections.synchronizedSet(LinkedHashSet<String>())
 
+    private const val MAX_STACK = 4
 
     fun push(path:String):Boolean {
-        if(pathStack.contains(path)) return false
+        if(pathStack.contains(path)) {
+            LogUtil.d("重复跳转 path:$path")
+            return false
+        }
         pathStack.add(path)
         return true
     }

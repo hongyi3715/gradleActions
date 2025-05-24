@@ -3,6 +3,8 @@ package com.example.lib_compiler.route
 import com.example.lib_annotation.Route
 import com.example.lib_compiler.ProcessorPart
 import com.example.lib_compiler.util.Const
+import com.example.lib_compiler.util.MetaInfUtil
+import com.example.lib_compiler.util.RouteDeepLinkUtil
 import com.example.lib_compiler.util.capitalizeFirst
 import com.example.lib_compiler.util.getGroupName
 import com.example.lib_compiler.util.getRootName
@@ -40,6 +42,8 @@ class RouteSymbolProcessorPart(environment: SymbolProcessorEnvironment):
                 val group = path.split("/").getOrNull(1) ?: return@forEach
 
                 routeMap.getOrPut(group) { mutableMapOf() }[path] = classInfo
+
+                RouteDeepLinkUtil.classToPath(classInfo,path)
             }
         routeMap.forEach {
             logger.warn("Route Map Info :$it")
@@ -58,7 +62,7 @@ class RouteSymbolProcessorPart(environment: SymbolProcessorEnvironment):
             Const.MutableMapClassName.parameterizedBy(Const.StringClassName,Const.StringClassName))
 
         for (group in routeMap.keys){
-            val className = "${Const.HROUTER_PACKAGE}.${getGroupName(group)}}"
+            val className = "${Const.HROUTER_PACKAGE}.${getGroupName(group)}"
             function.addStatement("rootMap[%S] = %S",group,className)
         }
 
@@ -71,7 +75,8 @@ class RouteSymbolProcessorPart(environment: SymbolProcessorEnvironment):
         file.bufferedWriter().use { writer ->
             fileSpec.writeTo(writer)
         }
-        writeMetaInf("${Const.HROUTER_PACKAGE}.$rootClassName")
+
+        MetaInfUtil.writeMetaInf(codeGenerator,"${Const.HROUTER_PACKAGE}.$rootClassName",moduleName,Const.ROUTE_CONTRACT)
     }
 
     fun generateGroup(groupMap: Map<String, Map<String, String>>) {
@@ -109,16 +114,14 @@ class RouteSymbolProcessorPart(environment: SymbolProcessorEnvironment):
     private fun writeMetaInf(rootClassName:String){
         val file = codeGenerator.createNewFile(
             Dependencies(aggregating = true),
-            packageName = "META-INF/hrouter_root",
+            packageName = "META-INF/route",
             fileName = moduleName,
-            extensionName = ""
         )
         file.bufferedWriter().use { writer ->
             writer.write(rootClassName)
             writer.newLine()
         }
     }
-
 
 }
 

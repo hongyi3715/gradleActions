@@ -11,10 +11,13 @@ import androidx.lifecycle.lifecycleScope
 import com.example.lib_annotation.data.RouteMeta
 import com.example.lib_api.autowired.ParameterBuilder
 import com.example.lib_api.interceptor.InterceptorManager
-import com.example.lib_api.interceptor.TestInterceptor
 import com.example.lib_api.route.RouteHelper
 import com.example.lib_api.util.LogUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class HRouterDelegate (path: String){
     private var routeMeta: RouteMeta = RouteHelper.findGroup(path)
@@ -58,15 +61,23 @@ class HRouterDelegate (path: String){
     }
 
     fun navigate(){
+        LogUtil.d("Navigate Context:${context}")
         if((context is LifecycleOwner) ){
             (context as LifecycleOwner).lifecycleScope.launch {
-                InterceptorManager.addInterceptor(TestInterceptor())
-                val intercepted = InterceptorManager.handleInterceptor(intentBuilder.getPath(),context)
-                LogUtil.d("Route Intercept :${intentBuilder.getPath()} has intercepted ? :$intercepted")
-                if(intercepted){
-                    startActivity()
-                }
+                interceptHandle()
             }
+        }else{
+            CoroutineScope(SupervisorJob() +Dispatchers.Default).launch {
+                interceptHandle()
+            }
+        }
+    }
+
+    private suspend fun interceptHandle(){
+        val path = intentBuilder.getPath()
+        val ctx = context
+        if(InterceptorManager.handleInterceptor(path,ctx)){
+            startActivity()
         }
     }
 }

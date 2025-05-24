@@ -14,3 +14,5 @@ class ContextIllegalException(): RouteException("Context is required,Current Con
 
 class RouteMetaIllegalException(): RouteException("Route Meta is not initialized")
 
+class UriParseIllegalException(uri: String): RouteException("uri 解析异常 : $uri")
+

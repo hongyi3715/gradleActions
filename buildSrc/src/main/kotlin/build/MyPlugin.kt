@@ -3,7 +3,6 @@ package build
 //import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import java.io.File
 
 /**
  * Author: Lq
@@ -20,7 +19,7 @@ class MyPlugin : Plugin<Project> {
                 androidExt?.sourceSets?.getByName("main")?.java?.srcDir(generatedDir)
                 androidExt?.sourceSets?.getByName("main")?.kotlin?.srcDir(generatedDir)*/
 
-                val buildRoute = target.tasks.register<TestBuild>("buildRoute", TestBuild::class.java) {
+                val buildRoute = target.tasks.register<HRouterBuild>("buildRoute", HRouterBuild::class.java) {
                     group = "buildDebug"
                     description = "构建路由索引"
                 }

@@ -27,10 +27,10 @@ class RouteInterceptorPart(environment: SymbolProcessorEnvironment): ProcessorPa
 
     override fun process(resolver: Resolver) {
         val routeInterceptors = mutableListOf<String>()
-        resolver.getSymbolsWithAnnotation(RouterInterceptor::class.qualifiedName!!).filterIsInstance<KSClassDeclaration>()
+        resolver.getSymbolsWithAnnotation(Const.InterceptorQualifiedName).filterIsInstance<KSClassDeclaration>()
             .forEach {
                 val symbol = it.annotations.first{
-                    it.shortName.asString() == "RouterInterceptor"
+                    it.shortName.asString() == Const.INTERCEPTOR_SHORT_NAME
                 }
 
                 val classInfo = it.qualifiedName?.asString() ?:return@forEach
@@ -43,9 +43,8 @@ class RouteInterceptorPart(environment: SymbolProcessorEnvironment): ProcessorPa
                         "group" -> group = arg.value as String
                     }
                 }
-                val mockGroup = "info"
                 logger.warn("Route Interceptor Class Path :$classInfo  Priority:$priority")
-                routeInterceptors += "InterceptorMeta(\"$classInfo\",$priority,$mockGroup)"
+                routeInterceptors += "InterceptorMeta(\"$classInfo\",$priority,\"$group\")"
             }
         if(routeInterceptors.isNotEmpty()){
             generateIntercept(routeInterceptors)
@@ -53,25 +52,24 @@ class RouteInterceptorPart(environment: SymbolProcessorEnvironment): ProcessorPa
     }
 
 
-    //todo 通过分组
     fun generateIntercept(interceptors:List<String>){
         val className = "InterceptorRegister${moduleName.capitalizeFirst()}"
         val functionBuilder = FunSpec.builder("register")
             .addParameter("interceptors", Const.MutableListClassName
                 .parameterizedBy(Const.InterceptorMetaClassName))
-            .addModifiers(KModifier.PUBLIC)
+            .addModifiers(KModifier.OVERRIDE)
         interceptors.forEach {
             functionBuilder.addStatement("interceptors.add($it)")
         }
 
-        val typeBuilder = TypeSpec.objectBuilder(className)
+        val typeBuilder = TypeSpec.objectBuilder(className).addSuperinterface(Const.InterceptorRegisterClassName)
             .addFunction(functionBuilder.build())
         val fileSpec = FileSpec.builder(HROUTER_PACKAGE,className).addType(typeBuilder.build()).build()
         val file = codeGenerator.createNewFile(Dependencies(false),HROUTER_PACKAGE,className)
         file.bufferedWriter().use { writer ->
             fileSpec.writeTo(writer)
         }
-        MetaInfUtil.writeMetaInf(codeGenerator,"${HROUTER_PACKAGE}.$className",moduleName,"META-INF/intercept")
+        MetaInfUtil.writeMetaInf(codeGenerator,"${HROUTER_PACKAGE}.$className",moduleName,Const.INTERCEPTOR_CONTRACT)
     }
 
 

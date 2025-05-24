@@ -1,5 +1,7 @@
 package com.example.lib_compiler
 
+import com.example.lib_compiler.deeplink.RouteDeepLinkPart
+import com.example.lib_compiler.degrade.RouteDegradePart
 import com.example.lib_compiler.interceptor.RouteInterceptorPart
 import com.example.lib_compiler.wired.AutoWiredProcessorPart
 import com.example.lib_compiler.route.RouteSymbolProcessorPart
@@ -13,7 +15,9 @@ class HRouterSymbolProcessor(private val environment: SymbolProcessorEnvironment
         val processors = listOf(
             AutoWiredProcessorPart(environment.logger,environment.codeGenerator),
             RouteSymbolProcessorPart(environment),
-            RouteInterceptorPart(environment)
+            RouteInterceptorPart(environment),
+            RouteDegradePart(environment),
+            RouteDeepLinkPart(environment)
         )
         processors.forEach {
             it.process(resolver)
