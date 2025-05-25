@@ -8,6 +8,9 @@
       <module name="GradleTest.plugin_hrouter" target="17" />
       <module name="GradleTest.plugin_hrouter.main" target="17" />
       <module name="GradleTest.plugin_hrouter.test" target="17" />
+      <module name="hrouter_plugin" target="17" />
+      <module name="hrouter_plugin.main" target="17" />
+      <module name="hrouter_plugin.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

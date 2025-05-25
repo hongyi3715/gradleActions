@@ -7,12 +7,16 @@ plugins{
 kotlin {
     jvmToolchain(17)
 }
+repositories {
+    google()
+    mavenCentral()
+}
 
 gradlePlugin {
     plugins {
         create("hrouterPlugin") {
             id = "com.lq.hrouter"
-            implementationClass = "com.lq.plugin_hrouter.HRouterPlugin"
+            implementationClass = "com.lq.hrouter_plugin.HRouterPlugin"
         }
     }
 }
