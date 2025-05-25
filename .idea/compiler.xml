@@ -5,6 +5,9 @@
       <module name="GradleTest.lib_core" target="11" />
       <module name="GradleTest.lib_core.main" target="11" />
       <module name="GradleTest.lib_core.test" target="11" />
+      <module name="GradleTest.plugin_hrouter" target="17" />
+      <module name="GradleTest.plugin_hrouter.main" target="17" />
+      <module name="GradleTest.plugin_hrouter.test" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>
