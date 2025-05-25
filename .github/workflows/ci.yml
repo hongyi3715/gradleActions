@@ -43,7 +43,7 @@ jobs:
           echo "::set-output name=version::$VERSION_NAME"
 
       - name: 👼 构建 release APK
-        run: ./gradlew assembleRelease  \
+        run: ./gradlew assembleRelease \
           -Psigning.store.file=keystore.jks \
           -Psigning.store.password=${{ secrets.SIGNING_STORE_PASSWORD }} \
           -Psigning.key.alias=${{ secrets.SIGNING_KEY_ALIAS }} \
