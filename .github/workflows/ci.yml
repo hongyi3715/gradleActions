@@ -43,7 +43,7 @@ jobs:
           echo "::set-output name=version::$VERSION_NAME"
 
       - name: 👼 构建 release APK
-        run: ./gradlew assembleProdRelease \
+        run: ./gradlew assembleRelease  \
           -Psigning.store.file=keystore.jks \
           -Psigning.store.password=${{ secrets.SIGNING_STORE_PASSWORD }} \
           -Psigning.key.alias=${{ secrets.SIGNING_KEY_ALIAS }} \
@@ -53,7 +53,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: prod-release-apk
-          path: app/build/outputs/apk/prod/release/*.apk
+          path: app/build/outputs/apk/release/*.apk
 
   release:
     name: 创建 Release
@@ -69,7 +69,7 @@ jobs:
         with:
           name: ${{ needs.build.outputs.versioning.version }}
           tag_name: ${{ needs.build.outputs.versioning.version }}
-          files: app/build/outputs/apk/prod/release/*.apk
+          files: app/build/outputs/apk/release/*.apk
 
   notify:
     name: 通知邮件
