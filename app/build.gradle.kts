@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    id("build.myplugin")
+    id("com.lq.hrouter") version "1.0.0"
 }
 
 android {
