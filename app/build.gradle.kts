@@ -20,6 +20,15 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        create("release") {
+            storeFile = file(findProperty("signing.store.file") ?: "release.keystore")
+            storePassword = findProperty("signing.store.password") as String?
+            keyAlias = findProperty("signing.key.alias") as String?
+            keyPassword = findProperty("signing.key.password") as String?
+        }
+    }
+
     sourceSets["main"].java.srcDirs(
         "build/generated/route",
         "build/generated/interceptor",

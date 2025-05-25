@@ -18,6 +18,7 @@ class HRouterPlugin : Plugin<Project> {
                 val generatedDir = File(target.buildDir, "generated/hrouter_index")
                 androidExt?.sourceSets?.getByName("main")?.java?.srcDir(generatedDir)
                 androidExt?.sourceSets?.getByName("main")?.kotlin?.srcDir(generatedDir)*/
+                project.plugins.apply("com.google.devtools.ksp")
 
                 val buildRoute = target.tasks.register<ContractTask>("buildRoute", ContractTask::class.java) {
                     group = "buildDebug"

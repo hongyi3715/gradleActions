@@ -1,28 +1,94 @@
-name: HRouter CI
+name: Android CI/CD with Release and Notification
 
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+    tags:
+      - 'v*'
 
 jobs:
   build:
-
+    name: 构建 APK
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: 📂 拉取代码
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: ☕️ 设置 Java
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: 17
+          java-version: '17'
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+      - name: ⚡ 缓存 Gradle
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: gradle-${{ runner.os }}-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
 
-      - name: Build with Gradle
-        run: ./gradlew build
+      - name: 🔐 解码 keystore
+        run: echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > keystore.jks
+
+      - name: 📆 生成版本号
+        id: versioning
+        run: |
+          VERSION_NAME="v$(date +'%Y.%m.%d').$GITHUB_RUN_NUMBER"
+          echo "VERSION_NAME=$VERSION_NAME" >> $GITHUB_ENV
+          echo "::set-output name=version::$VERSION_NAME"
+
+      - name: 👼 构建 release APK
+        run: ./gradlew assembleProdRelease \
+          -Psigning.store.file=keystore.jks \
+          -Psigning.store.password=${{ secrets.SIGNING_STORE_PASSWORD }} \
+          -Psigning.key.alias=${{ secrets.SIGNING_KEY_ALIAS }} \
+          -Psigning.key.password=${{ secrets.SIGNING_KEY_PASSWORD }}
+
+      - name: 📦 上传 APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-release-apk
+          path: app/build/outputs/apk/prod/release/*.apk
+
+  release:
+    name: 创建 Release
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📂 拉取代码
+        uses: actions/checkout@v4
+
+      - name: 🎉 创建 GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          name: ${{ needs.build.outputs.versioning.version }}
+          tag_name: ${{ needs.build.outputs.versioning.version }}
+          files: app/build/outputs/apk/prod/release/*.apk
+
+  notify:
+    name: 通知邮件
+    needs: release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📬 发送邮件
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.163.com
+          server_port: 465
+          username: ${{ secrets.MAIL_USERNAME }}
+          password: ${{ secrets.MAIL_PASSWORD }}
+          subject: "新版本发布: ${{ env.VERSION_NAME }}"
+          to: your@email.com
+          from: GitHub Action <${{ secrets.MAIL_USERNAME }}>
+          body: |
+            您好，
+
+            Android APK ${{ env.VERSION_NAME }} 已经构建并上传。
+
+            请检查 GitHub Release 页面下载。
+
+            谢谢！
