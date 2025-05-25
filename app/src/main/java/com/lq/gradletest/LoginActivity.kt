@@ -11,9 +11,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lib_annotation.AutoWired
-import com.example.lib_annotation.Route
-import com.example.lib_api.HRouter
+import com.lq.lib_annotation.AutoWired
+import com.lq.lib_annotation.Route
+import com.lq.lib_api.HRouter
 
 @Route(path = "/main/login")
 class LoginActivity: ComponentActivity() {
