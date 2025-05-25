@@ -4,7 +4,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.lib_api"
+    namespace = "com.lq.lib_api"
     compileSdk = 35
 
     defaultConfig {

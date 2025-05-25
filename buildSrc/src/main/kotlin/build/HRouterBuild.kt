@@ -50,7 +50,7 @@ abstract class HRouterBuild : DefaultTask(){
         val fileContent = buildString {
             appendLine("package com.lq.router")
             appendLine()
-            appendLine("import com.example.lib_annotation.route.IRouteRoot")
+            appendLine("import com.lq.lib_annotation.route.IRouteRoot")
             appendLine()
             appendLine("object HRouterIndex {")
             appendLine("    val roots: List<IRouteRoot> by lazy {")
@@ -78,7 +78,7 @@ abstract class HRouterBuild : DefaultTask(){
         val fileContent = buildString {
             appendLine("package com.lq.router")
             appendLine()
-            appendLine("import com.example.lib_annotation.interceptor.IInterceptorRegister")
+            appendLine("import com.lq.lib_annotation.interceptor.IInterceptorRegister")
             appendLine()
             appendLine("object InterceptorIndex {")
             appendLine("    val roots: List<IInterceptorRegister> by lazy {")
@@ -106,7 +106,7 @@ abstract class HRouterBuild : DefaultTask(){
         val fileContent = buildString {
             appendLine("package com.lq.router")
             appendLine()
-            appendLine("import com.example.lib_annotation.degrade.IDegradeRegister")
+            appendLine("import com.lq.lib_annotation.degrade.IDegradeRegister")
             appendLine()
             appendLine("object DegradeIndex {")
             appendLine("    val roots: List<IDegradeRegister> by lazy {")
@@ -134,7 +134,7 @@ abstract class HRouterBuild : DefaultTask(){
         val fileContent = buildString {
             appendLine("package com.lq.router")
             appendLine()
-            appendLine("import com.example.lib_annotation.deeplink.IDeepLinkRegister")
+            appendLine("import com.lq.lib_annotation.deeplink.IDeepLinkRegister")
             appendLine()
             appendLine("object DeepLinkIndex {")
             appendLine("    val roots: List<IDeepLinkRegister> by lazy {")

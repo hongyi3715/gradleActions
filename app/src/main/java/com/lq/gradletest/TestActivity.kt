@@ -11,9 +11,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lib_annotation.AutoWired
-import com.example.lib_annotation.Route
-import com.example.lib_annotation.RouteDeepLink
+import com.lq.lib_annotation.Route
+import com.lq.lib_annotation.RouteDeepLink
 
 @Route(path = "/main/test")
 @RouteDeepLink(["myapp://test","http://www.google.com:8090/"])

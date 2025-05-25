@@ -1,9 +1,9 @@
 package com.lq.login
 
 import android.content.Context
-import com.example.lib_annotation.RouterInterceptor
-import com.example.lib_api.interceptor.IRouteInterceptor
-import com.example.lib_api.interceptor.InterceptorChain
+import com.lq.lib_annotation.RouterInterceptor
+import com.lq.lib_api.interceptor.IRouteInterceptor
+import com.lq.lib_api.interceptor.InterceptorChain
 
 @RouterInterceptor
 class PermissionInterceptor: IRouteInterceptor {

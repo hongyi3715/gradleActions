@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.lib_api.HRouter
-import com.example.lib_api.deeplink.DeepLinkManager
+import com.lq.lib_api.HRouter
 
 class DeepLinkDispatcherActivity: ComponentActivity() {
 
@@ -27,12 +25,7 @@ class DeepLinkDispatcherActivity: ComponentActivity() {
 
     private fun getInfo(){
         val uri = intent?.data
-        if(uri!=null){
-            val path  = DeepLinkManager.getPathFromUri(uri.toString())
-            if(!path.isNullOrEmpty()){
-                HRouter.build(path).withContext(this).navigate()
-            }
-        }
+        HRouter.buildUri(uri.toString()).withContext(this).navigate()
     }
 }
 

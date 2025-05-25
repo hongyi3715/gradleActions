@@ -16,10 +16,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.lifecycleScope
-import com.example.lib_annotation.Route
-import com.example.lib_annotation.RouteDeepLink
-import com.example.lib_api.HRouter
-import com.example.lib_api.util.showToast
+import com.lq.lib_annotation.Route
+import com.lq.lib_annotation.RouteDeepLink
+import com.lq.lib_api.HRouter
 import com.lq.gradletest.ui.theme.GradleTestTheme
 import kotlinx.coroutines.launch
 
@@ -42,12 +41,6 @@ class MainActivity : ComponentActivity() {
     }
 
 
-    fun mockInfo(){
-        lifecycleScope.launch {
-
-        }
-    }
-
 }
 
 @Composable
@@ -63,7 +56,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 fun toLogin(context: Context){
     HRouter.build("/main/test")
         .withContext(context)
-        .with {
+        .withParams {
             string("userName", "Android")
             int("account", 100)
             parameter("parameter","current parameter")

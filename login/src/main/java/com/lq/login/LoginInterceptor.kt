@@ -1,12 +1,12 @@
 package com.lq.login
 
 import android.content.Context
-import com.example.lib_annotation.RouterInterceptor
-import com.example.lib_api.HRouter
-import com.example.lib_api.interceptor.IRouteInterceptor
-import com.example.lib_api.interceptor.InterceptorChain
-import com.example.lib_api.util.LogUtil
-import com.example.lib_api.util.showToast
+import com.lq.lib_annotation.RouterInterceptor
+import com.lq.lib_api.HRouter
+import com.lq.lib_api.interceptor.IRouteInterceptor
+import com.lq.lib_api.interceptor.InterceptorChain
+import com.lq.lib_api.util.LogUtil
+import com.lq.lib_api.util.showToast
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext

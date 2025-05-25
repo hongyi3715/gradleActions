@@ -1,7 +1,7 @@
 package com.lq.gradletest
 
 import android.app.Application
-import com.example.lib_api.HRouter
+import com.lq.lib_api.HRouter
 
 class App: Application() {
 
