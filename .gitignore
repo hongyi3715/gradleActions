@@ -76,3 +76,5 @@ bin/
 # Kotlin Symbol Processing (KSP)
 .ksp/
 .kotlinc/
+
+.apk
