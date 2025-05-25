@@ -1,15 +1,78 @@
-*.iml
-.gradle
-/local.properties
+# ========================
+# Android Studio & Gradle
+# ========================
+
+/.idea/
 /.idea/caches
 /.idea/libraries
 /.idea/modules.xml
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
+
+/local.properties
+.gradle/
+build/
+captures/
+.externalNativeBuild/
+.cxx/
+
+# AGP 构建系统
+**/build/
+**/out/
+buildSrc/.gradle/
+buildSrc/build/
+
+# Kotlin / Java 编译产物
+*.class
+*.dex
+*.apk
+*.ap_
+*.jar
+*.war
+*.ear
+
+# Jetpack Compose
+*.preview-cache/
+
+# 日志与临时文件
+*.log
+*.tmp
+*.swp
+*.swo
+
+# 系统垃圾文件
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-local.properties
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# 签名与安全
+*.jks
+*.keystore
+*.pem
+*.key
+*.crt
+
+# Firebase / Crashlytics
+crashlytics-build.properties
+fabric.properties
+google-services.json
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+# VSCode
+.vscode/
+
+# NDK
+obj/
+gen/
+bin/
+
+# Kotlin Symbol Processing (KSP)
+.ksp/
+.kotlinc/
